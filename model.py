@@ -5,7 +5,7 @@ Available latent distrivutions:
     * Gaussian/ Normal [1]
     * Relaxed Bernoulli/ Bin Concrete [2]
 
-[1]
+[1] Kingma, Diederik P., and Max Welling. "Auto-encoding variational bayes."
 [2] Maddison, Chris J., Andriy Mnih, and Yee Whye Teh. "The concrete
     distribution: A continuous relaxation of discrete random variables."
 
