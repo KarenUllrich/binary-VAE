@@ -12,16 +12,12 @@ This code has been tested with
 -   `tensorflow 1.13.1` 
 
 A suitable conda environment may be installed via
-
-	```
-	conda env create -f requirements.yml 
-	```
+	
+	conda env create -f requirements.yml 	
 	
 And used by
 
-	```
 	source activate bvae
-	```
 
 ### Maintenance
 
