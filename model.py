@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Variational Autoencoder models.
 
-Available latent distrivutions:
+Available latent distributions:
     * Gaussian/ Normal [1]
     * Relaxed Bernoulli/ Bin Concrete [2]
 
@@ -28,9 +28,11 @@ class VAE(tf.keras.Model):
             [
                 tf.keras.layers.InputLayer(input_shape=(28, 28, 1)),
                 tf.keras.layers.Conv2D(
-                    filters=32, kernel_size=3, strides=(2, 2), activation='relu'),
+                    filters=32, kernel_size=3, strides=(2, 2),
+                    activation='relu'),
                 tf.keras.layers.Conv2D(
-                    filters=64, kernel_size=3, strides=(2, 2), activation='relu'),
+                    filters=64, kernel_size=3, strides=(2, 2),
+                    activation='relu'),
                 tf.keras.layers.Flatten(),
                 tf.keras.layers.Dense(400, activation='relu'),
                 # No activation
@@ -81,31 +83,36 @@ class BVAE(VAE):
         super().__init__(latent_dim)
 
         probs = 0.5 * tf.ones(latent_dim)
-        self.prior = tfd.Logistic(tf.log(probs) / prior_temperature, 1. / prior_temperature)
+        self.prior = tfd.Logistic(tf.log(probs) / prior_temperature,
+                                  1. / prior_temperature)
         self.prior_sample_fun = lambda x: tf.sigmoid(self.prior.sample(x))
 
     def encode(self, x, temperature=0.5):
-        logits, _ = tf.split(self.inference_net(x), num_or_size_splits=2, axis=1)
-
-        # we do
+        logits, _ = tf.split(self.inference_net(x), num_or_size_splits=2,
+                             axis=1)
+        # we use
         latent_dist = tfd.Logistic(logits / temperature, 1. / temperature)
         # instead of
-        # latent_dist = tfd.RelaxedBernoulli(temperature=temperature, logits=logits)
-        # otherwise we might run into underflow issues when computing the log_prob
+        # tfd.RelaxedBernoulli(temperature=temperature, logits=logits)
+        # otherwise we run into underflow issues when computing the log_prob
 
         logistic_samples = latent_dist.sample()
-        return tf.sigmoid(logistic_samples), latent_dist.log_prob(logistic_samples), self.prior.log_prob(
+        return tf.sigmoid(logistic_samples), latent_dist.log_prob(
+            logistic_samples), self.prior.log_prob(
             logistic_samples)
 
 
 class NVAE(VAE):
     def __init__(self, latent_dim):
         super().__init__(latent_dim)
-        self.prior = tfd.Normal(loc=tf.zeros(latent_dim), scale=tf.ones(latent_dim))
+        self.prior = tfd.Normal(loc=tf.zeros(latent_dim),
+                                scale=tf.ones(latent_dim))
         self.prior_sample_fun = self.prior.sample
 
     def encode(self, x):
-        loc, logvar = tf.split(self.inference_net(x), num_or_size_splits=2, axis=1)
+        loc, logvar = tf.split(self.inference_net(x), num_or_size_splits=2,
+                               axis=1)
         latent_dist = tfd.Normal(loc=loc, scale=tf.exp(logvar))
         latent_samples = latent_dist.sample()
-        return latent_samples, latent_dist.log_prob(latent_samples), self.prior.log_prob(latent_samples)
+        return latent_samples, latent_dist.log_prob(
+            latent_samples), self.prior.log_prob(latent_samples)
