@@ -9,13 +9,16 @@ Maddison, Chris J., Andriy Mnih, and Yee Whye Teh.
 
 This code has been tested with
 -   `python 3.6`
--   `tensorflow 1.13.1` 1.13.1
+-   `tensorflow 1.13.1` 
 
 A suitable conda environment may be installed via
+
 	```
 	conda env create -f requirements.yml 
 	```
+	
 And used by
+
 	```
 	source activate bvae
 	```
