@@ -2,7 +2,7 @@
 
 Tensorflow implmentation of a VAE with Bininary Concrete (BinConcrete) latent distribution, based on:
 
-[The concrete distribution: A continuous relaxation of discrete random variables](https://arxiv.org/pdf/1611.00712.pdf)  
+["The concrete distribution: A continuous relaxation of discrete random variables"](https://arxiv.org/pdf/1611.00712.pdf)  
 Maddison, Chris J., Andriy Mnih, and Yee Whye Teh.
 
 ### Requirements
