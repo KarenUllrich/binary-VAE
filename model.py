@@ -81,20 +81,25 @@ class VAE(tf.keras.Model):
 class BVAE(VAE):
     def __init__(self, latent_dim, prior_temperature=0.1):
         super().__init__(latent_dim)
-
+        
+        # even probability for 0 and 1
+        # note that the prior has a temperature, that does not need to be
+        # the same as the posterior
         probs = 0.5 * tf.ones(latent_dim)
         self.prior = tfd.Logistic(tf.log(probs) / prior_temperature,
                                   1. / prior_temperature)
         self.prior_sample_fun = lambda x: tf.sigmoid(self.prior.sample(x))
 
-    def encode(self, x, temperature=0.5):
+    def encode(self, x, temperature=0.2):
         logits, _ = tf.split(self.inference_net(x), num_or_size_splits=2,
                              axis=1)
-        # we use
+        # The temperature adjusts the relaxiation of the Concrete 
+        # distribution. We use,
         latent_dist = tfd.Logistic(logits / temperature, 1. / temperature)
         # instead of
-        # tfd.RelaxedBernoulli(temperature=temperature, logits=logits)
-        # otherwise we run into underflow issues when computing the log_prob
+        # tfd.RelaxedBernoulli(temperature=temperature, logits=logits).
+        # Otherwise we run into underflow issues when computing the 
+        # log_prob. This has been expained in [2] Appendix C.3.2.
 
         logistic_samples = latent_dist.sample()
         return tf.sigmoid(logistic_samples), latent_dist.log_prob(
