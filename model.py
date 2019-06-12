@@ -3,7 +3,7 @@
 
 Available latent distributions:
     * Gaussian/ Normal [1]
-    * Relaxed Bernoulli/ Bin Concrete [2]
+    * RelaxedBernoulli/ BinConcrete [2]
 
 [1] Kingma, Diederik P., and Max Welling. "Auto-encoding variational bayes."
 [2] Maddison, Chris J., Andriy Mnih, and Yee Whye Teh. "The concrete
@@ -79,7 +79,7 @@ class VAE(tf.keras.Model):
 
 
 class BVAE(VAE):
-    def __init__(self, latent_dim, prior_temperature=0.5):
+    def __init__(self, latent_dim, prior_temperature=0.1):
         super().__init__(latent_dim)
 
         probs = 0.5 * tf.ones(latent_dim)
