@@ -1,4 +1,4 @@
-name: DVAE
+name: binary_vae
 channels:
   - defaults
 dependencies:
