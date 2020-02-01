@@ -22,7 +22,8 @@ This code has been tested with
 Install conda environment via
 
 
-	conda env create -f environment.yml source activate binary_vae
+	conda env create -f environment.yml 
+	source activate binary_vae
 
 
 ### Maintenance
