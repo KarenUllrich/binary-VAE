@@ -18,8 +18,7 @@ from vis_tools import plot_reconstuctions
 from vis_tools import plot_samples
 
 tfd = tfp.distributions
-tf.enable_eager_execution()
-
+tf.executing_eagerly()
 
 def get_dataset():
     (train_images, _), (test_images, _) = tf.keras.datasets.mnist.load_data()
@@ -90,7 +89,7 @@ def train(epochs, model, optimizer, train_dataset, test_dataset):
 
 
 def main(unused_argv):
-    optimizer = tf.train.AdamOptimizer(FLAGS.learning_rate)
+    optimizer = tf.keras.optimizers.Adam(FLAGS.learning_rate)
     if FLAGS.latent_dist == 'normal':
         model = NVAE(latent_dim=FLAGS.latent_dim)
     elif FLAGS.latent_dist == 'binary':

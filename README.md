@@ -14,9 +14,16 @@ You can simply run this code by
 
 This code has been tested with
 -   `python 3.6`
--   `tensorflow 1.13.1` 
--   `tensorflow-probability 0.6.0` 
--   `matplotlib 3.1.0` 
+-   `tensorflow 2.1.0` 
+-   `tensorflow-probability 0.9.0` 
+-   `matplotlib 3.1.2` 
+
+
+Install conda environment via
+
+
+	conda env create -f environment.yml source activate binary_vae
+
 
 ### Maintenance
 

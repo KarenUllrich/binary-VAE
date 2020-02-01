@@ -73,7 +73,7 @@ class VAE(tf.keras.Model):
         # Bernoullli observation model is equivalent to cross entropy loss
         observation_dist = tfd.Bernoulli(logits=logits)
         if return_probs:
-            return observation_dist.probs
+            return observation_dist.probs_parameter()
         logpx_z = tf.reduce_sum(observation_dist.log_prob(x), axis=[1, 2, 3])
         return logpx_z
 
@@ -86,7 +86,7 @@ class BVAE(VAE):
         # note that the prior has a temperature, that does not need to be
         # the same as the posterior
         probs = 0.5 * tf.ones(latent_dim)
-        self.prior = tfd.Logistic(tf.log(probs) / prior_temperature,
+        self.prior = tfd.Logistic(tf.math.log(probs) / prior_temperature,
                                   1. / prior_temperature)
         self.prior_sample_fun = lambda x: tf.sigmoid(self.prior.sample(x))
 
